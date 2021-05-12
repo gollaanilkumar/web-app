@@ -6,7 +6,8 @@ pipeline{
     stages{
         stage("SCM"){
             steps{
-                git branch: 'feature-1', url: 'https://github.com/gollaanilkumar/web-app'
+                echo "hi am commenting thr SCM becuase it is twice"
+               // git branch: 'feature-1', url: 'https://github.com/gollaanilkumar/web-app'
             }
         }
         stage("BUild"){
