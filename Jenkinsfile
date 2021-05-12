@@ -1,23 +1,36 @@
-node{
-   stage('SCM Checkout'){
-     git 'https://github.com/javahometech/my-app'
-   }
-   stage('Compile-Package'){
-      // Get maven home path
-      def mvnHome =  tool name: 'maven-3', type: 'maven'   
-      sh "${mvnHome}/bin/mvn package"
-   }
-   stage('Email Notification'){
-      mail bcc: '', body: '''Hi Welcome to jenkins email alerts
-      Thanks
-      Hari''', cc: '', from: '', replyTo: '', subject: 'Jenkins Job', to: 'hari.kammana@gmail.com'
-   }
-   stage('Slack Notification'){
-       slackSend baseUrl: 'https://hooks.slack.com/services/',
-       channel: '#jenkins-pipeline-demo',
-       color: 'good', 
-       message: 'Welcome to Jenkins, Slack!', 
-       teamDomain: 'javahomecloud',
-       tokenCredentialId: 'slack-demo'
-   }
+pipeline{
+    agent any
+      tools {
+        maven 'maven3' 
+    }
+    stages{
+        stage("SCM"){
+            steps{
+                git branch: 'feature-1', url: 'https://github.com/gollaanilkumar/web-app'
+            }
+        }
+        stage("BUild"){
+            steps{
+                sh 'mvn clean package'
+                sh 'mv target/my*.war   target/feature-1.war'
+            }
+        }
+       stage("Deploy"){
+           steps{
+               sshagent(['tomcat']) {
+                    //rename war
+                    sh 'mv target/feature-1.war target/anil.war'
+                    //deploy war file to tomcat
+                    sh 'scp -o StrictHostKeyChecking=no target/anil.war ec2-user@172.31.44.101:/opt/tomcat8/webapps'
+                    // start and restart tomcat
+                    
+                    sh 'ssh ec2-user@172.31.44.101 /opt/tomcat8/bin/shutdown.sh'
+                    sh 'ssh ec2-user@172.31.44.101 /opt/tomcat8/bin/startup.sh'
+                    
+                    
+    // some block
+}
+           }
+       }
+    }
 }
