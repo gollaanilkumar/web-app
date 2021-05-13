@@ -20,7 +20,7 @@ pipeline{
         }
        stage("Deploy"){
            steps{
-                tomcat-deploy("tomcat","ec2-user",172.31.44.101)
+                tomcat-deploy("tomcat","ec2-user","172.31.44.101")
     // some block
 }
            }
