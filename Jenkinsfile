@@ -1,3 +1,5 @@
+@Library('sharedlibs') _
+
 pipeline{
     agent any
       tools {
@@ -18,17 +20,7 @@ pipeline{
         }
        stage("Deploy"){
            steps{
-               sshagent(['tomcat']) {
-                    //rename war
-                    sh 'mv target/feature-1.war target/anil.war'
-                    //deploy war file to tomcat
-                    sh 'scp -o StrictHostKeyChecking=no target/anil.war ec2-user@172.31.44.101:/opt/tomcat8/webapps'
-                    // start and restart tomcat
-                    
-                    sh 'ssh ec2-user@172.31.44.101 /opt/tomcat8/bin/shutdown.sh'
-                    sh 'ssh ec2-user@172.31.44.101 /opt/tomcat8/bin/startup.sh'
-                    
-                    
+                tomcat-deploy("tomcat","ec2-user",172.31.44.101)
     // some block
 }
            }
