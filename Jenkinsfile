@@ -30,8 +30,8 @@ pipeline{
                    nexusUrl: '172.31.6.193:8081', 
                    nexusVersion: 'nexus3', 
                    protocol: 'http', 
-                   repository:repository ,
-                   version: pom.version
+                   repository:'javahome-snapshot' ,
+                   version: '0.0.1-SNAPSHOT'
             }
         }
         }
