@@ -22,7 +22,8 @@ pipeline{
         stage("Uploading to NExus"){
             steps{
                 script{
-               nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: 'target/feature-1.war', type: 'war']], credentialsId: 'nexus3', groupId: 'in.javahome', nexusUrl: '172.31.31.81:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'javahome-snapshot', version: '0.0.1-SNAPSHOT'
+                def pom = readMavenPom file: 'pom.xml'
+               nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: 'target/feature-1.war', type: 'war']], credentialsId: 'nexus3', groupId: 'in.javahome', nexusUrl: '172.31.31.81:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'javahome-snapshot', version: "{pom.version}"
             }
         }
         }
