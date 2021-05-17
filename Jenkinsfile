@@ -25,6 +25,7 @@ pipeline{
                nexusArtifactUploader artifacts: [[artifactId: 'myweb', classifier: '', file: 'target/feat*.war', type: 'war']], credentialsId: 'nexus3', groupId: 'in.javahome', nexusUrl: '172.31.31.81:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'javahome-release', version: '0.0.1'
             }
         }
+        }
        stage("Deploy"){
           
            steps{
